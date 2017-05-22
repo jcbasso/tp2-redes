@@ -18,6 +18,7 @@ def customTraceroute(host,tries=3):
             finishedTrace = not tipo == timeExceededType
         traceroutes.insert(i,iTraceroute)
     return traceroutes
+
 def traceReplyTohost(host, ttl):
     pkt = IP(dst=host, ttl=ttl) / ICMP()
     # Send the packet and get a reply
@@ -29,7 +30,7 @@ def traceReplyTohost(host, ttl):
 def parseArgs():
     parser = argparse.ArgumentParser(description='Trace packages')
     parser.add_argument('host', help='a host to trace its route')
-    parser.add_argument('--TC', dest='tracer', default=traceroute, const=customTraceroute, nargs='?',
+    parser.add_argument('--TC', dest='tracer', default=customTraceroute, const=traceroute, nargs='?',
             help='which traceroute implementation to use (default "traceroute")')
     return parser.parse_args()
 
