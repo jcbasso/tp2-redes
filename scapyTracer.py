@@ -5,15 +5,19 @@ import time
 
 timeExceededType = 11
 
-def customTraceroute(host):
-    ttl = 1
-    finishedTrace = False
-    while not finishedTrace :
-        src,tipo,rtt = traceReplyTohost(host, ttl)
-        print src + ' with RTT -> ' + rtt
-        ttl += 1
-        finishedTrace = not tipo == timeExceededType
-
+def customTraceroute(host,tries=3):
+    traceroutes = []
+    for i in xrange(0,tries):
+        iTraceroute = []
+        ttl = 1
+        finishedTrace = False
+        while not finishedTrace :
+            src,tipo,rtt = traceReplyTohost(host, ttl)
+            iTraceroute.append( src + ' with RTT -> ' + rtt )
+            ttl += 1
+            finishedTrace = not tipo == timeExceededType
+        traceroutes.insert(i,iTraceroute)
+    return traceroutes
 def traceReplyTohost(host, ttl):
     pkt = IP(dst=host, ttl=ttl) / ICMP()
     # Send the packet and get a reply
@@ -31,4 +35,4 @@ def parseArgs():
 
 args = parseArgs()
 
-args.tracer(args.host)
+print args.tracer(args.host)
