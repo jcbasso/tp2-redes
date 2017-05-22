@@ -8,8 +8,8 @@ timeExceededType = 11
 def customTraceroute(host):
     ttl = 1
     finishedTrace = False
-    while not finishedTrace :
-        src,tipo,rtt = traceReplyTohost(host, ttl)
+    while not finishedTrace:
+        src, tipo, rtt = traceReplyTohost(host, ttl)
         print src + ' with RTT -> ' + rtt
         ttl += 1
         finishedTrace = not tipo == timeExceededType
@@ -25,7 +25,7 @@ def traceReplyTohost(host, ttl):
 def parseArgs():
     parser = argparse.ArgumentParser(description='Trace packages')
     parser.add_argument('host', help='a host to trace its route')
-    parser.add_argument('--TC', dest='tracer', default=traceroute, const=customTraceroute, nargs='?',
+    parser.add_argument('--TC', dest='tracer', default=customTraceroute, const=traceroute, nargs='?',
             help='which traceroute implementation to use (default "traceroute")')
     return parser.parse_args()
 
