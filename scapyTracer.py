@@ -22,8 +22,11 @@ def trace(host, debug):
 	ttl_to_routes = custom_traceroute(host, NUMBER_OF_PACKAGES)
 	print_prediction(ttl_to_routes)
 	if debug:
+		print_line_separation()
 		print(json.dumps(ttl_to_routes, indent = 4, separators =(',', ': ')))
-		with open('trace.json', 'w') as traceFile:
+		fileName = 'trace.json'
+		print('Dumping JSON data to ' + fileName)
+		with open(fileName, 'wa') as traceFile:
 			json.dump(ttl_to_routes, traceFile, indent = 4, separators =(',', ': '))
 
 # Returns {ttl -> {rtts -> {src -> [rtt]}}, mean}}
@@ -94,10 +97,11 @@ def is_ip_reserved(ip):
 
     return priv_lo.match(ip) or priv_24.match(ip) or priv_20.match(ip) or priv_16.match(ip)
 
-def print_prediction(ttl_to_routes): 
+def print_prediction(ttl_to_routes):
+	print_line_separation()
+	print('Starting prediction')
 	meanSteps = calculate_mean_steps(ttl_to_routes)
 	print(predict_intercontinental_steps(meanSteps))
-	#print(meanSteps)
 
 # Returns [(ips, mean)]
 # Filters steps with private ips
@@ -130,9 +134,8 @@ def predict_intercontinental_steps(mean_steps):
 		t = stats.t.ppf(1-0.05, n)
 		tau = t * (n - 1) / (sqrt(n) * sqrt((n - 2) * pow(t, 2)))
 		tauS = tau * S
-		print('Tau technique step with tau = ' + str(tauS) + ' | t = ' + str(t) + ' | n = ' + str(n))
 		outliers.extend([(src, mean) for src, mean in normals if abs(mean - X) > tauS])
-		normals = [(src, mean) for src, mean in normals if abs(mean - X) <= tauS]
+		normals = [(src, mean) for src, mean in normals if abs(mean - X) / S <= tauS]
 		finishedPrediction = len(normals) < 3 or len(normals) == n
 	return outliers
 
@@ -141,6 +144,11 @@ def parse_args():
 	parser.add_argument('host', help='a host to trace its route')
 	parser.add_argument('--debug', dest='debug', const=True, default=False, nargs='?', help='print JSON and dump to file')
 	return parser.parse_args()
+
+def print_line_separation():
+	print('\n')
+	print('########################################')
+	print('\n')
 
 args = parse_args()
 
