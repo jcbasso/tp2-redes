@@ -40,7 +40,7 @@ def custom_traceroute(host, number_of_packages):
 			break
 		src_to_rtts, mean = trace_reply_to_host(host, number_of_packages, step)
 		# Don't consider timed-out responses
-		if (mean < TIMEOUT):
+		if (0 < mean and mean < TIMEOUT):
 			steps[step] = {'rtts' : src_to_rtts, 'mean' : mean}
 
 	return steps
@@ -61,6 +61,9 @@ def trace_reply_to_host(host, number_of_packages, ttl):
 			start = time.time()
 			reply = sr1(pkt, verbose=0, timeout=TIMEOUT)
 			rtt = time.time() - start
+			if rtt >= TIMEOUT:
+				print(ttlStr + 'packet ' + str(i) + ' timed-out')
+				continue
 			mean += rtt
 			
 			if not reply is None:
