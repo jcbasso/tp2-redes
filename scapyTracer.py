@@ -111,14 +111,12 @@ def print_prediction(ttl_to_routes):
 def calculate_mean_steps(ttl_to_routes):
 	meanSteps = []
 	lastMean = 0
-	for _, route in sorted(ttl_to_routes.items()):
+	for ttl, route in sorted(ttl_to_routes.items(), key=lambda it: int(it[0])):
 		# route = {rtts -> {src -> [rtt]}}, mean}
 		ips = [ip for ip in list(route['rtts']) if not is_ip_reserved(ip)]
 		deltaMean = route['mean'] - lastMean
-		if deltaMean < 0:
-			deltaMean = 0
 		lastMean = route['mean']
-		if len(ips) > 0:
+		if len(ips) > 0 and deltaMean > 0:
 			# Should be only one host, it's safe to take the first one
 			meanSteps.append((ips[0], deltaMean))
 	return meanSteps
@@ -134,12 +132,15 @@ def predict_intercontinental_steps(mean_steps):
 		sample = numpy.array([mean for _, mean in normals])
 		X = numpy.mean(sample)
 		S = numpy.std(sample)
-		t = stats.t.ppf(1-0.05, n)
-		tau = t * (n - 1) / (sqrt(n) * sqrt((n - 2) * pow(t, 2)))
+		t = stats.t.ppf(1 - 0.025, n - 2)
+		tau = (t * (n - 1)) / (sqrt(n) * sqrt((n - 2) + pow(t, 2)))
 		tauS = tau * S
-		outliers.extend([(src, mean) for src, mean in normals if abs(mean - X) > tauS])
-		normals = [(src, mean) for src, mean in normals if abs(mean - X) / S <= tauS]
-		finishedPrediction = len(normals) < 3 or len(normals) == n
+		maxSrc, maxMean = max(normals, key=lambda i: i[1])
+		if n > 3 and abs(maxMean - X) > tauS:
+			outliers.append((maxSrc, maxMean))
+			normals = [(src, mean) for src, mean in normals if not maxSrc == src]
+		else:
+			finishedPrediction = True
 	return outliers
 
 def parse_args():
