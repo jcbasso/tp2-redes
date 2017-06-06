@@ -14,7 +14,7 @@ from math import sqrt, pow
 TIME_EXCEEDED_TYPE = 11
 MAX_HOPS = 64
 NUMBER_OF_PACKAGES = 30
-TIMEOUT = 5
+TIMEOUT = 3
 REACHED_END_CONDITION = False
 
 def trace(host, debug):
@@ -51,7 +51,7 @@ def trace_reply_to_host(host, number_of_packages, ttl):
 	mean = 0
 	packetsSent = 0
 	global REACHED_END_CONDITION
-	
+	timedoutpackets = 0
 	for i in range(0, number_of_packages):
 		try:
 			ttlStr = '[TTL = '  + str(ttl) + '] '
@@ -62,7 +62,9 @@ def trace_reply_to_host(host, number_of_packages, ttl):
 			reply = sr1(pkt, verbose=0, timeout=TIMEOUT)
 			rtt = time.time() - start
 			if rtt >= TIMEOUT:
+				timedoutpackets += 1
 				print(ttlStr + 'packet ' + str(i) + ' timed-out')
+				if timedoutpackets >= 5: break
 				continue
 			mean += rtt
 			
