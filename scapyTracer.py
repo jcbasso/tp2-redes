@@ -66,6 +66,7 @@ def trace_reply_to_host(host, number_of_packages, ttl):
 				print(ttlStr + 'packet ' + str(i) + ' timed-out')
 				if timedoutpackets >= 5: break
 				continue
+			timedoutpackets = 0
 			mean += rtt
 			
 			if not reply is None:
