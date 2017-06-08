@@ -1,11 +1,3 @@
-HOST
-====
-
-www.du.ac.in
-
-JSON
-====
-
 {
     "1": {
         "rtts": {
@@ -556,29 +548,3 @@ JSON
         "mean": 0.7264485200246175
     }
 }
-
-PREDICTIONS
-===========
-
-[('180.149.48.12', 0.3531878197330167), ('200.0.204.88', 0.13284538586934408), ('180.149.48.1', 0.0778597311041821), ('180.149.48.5', 0.05960392951965332)]
-
-LOCATIONS
-=========
-
-10.210.210.199 - Argentina, Buenos Aires, CABA
-157.92.37.99 - Argentina, Buenos Aires, CABA
-157.92.47.98 - Argentina, Buenos Aires, CABA
-157.92.47.2 - Argentina, Buenos Aires, CABA
-168.96.0.18 - Argentina, Buenos Aires, CABA
-200.0.204.154 - Uruguay, Montevideo
-200.0.204.88 - Uruguay, Montevideo
-200.0.204.58 - Uruguay, Montevideo
-200.0.207.10 - Uruguay, Montevideo
-198.71.45.7 - United States, District of Columbia
-162.252.70.118 - United States, Michigan
-162.252.70.102 - United States, Michigan
-180.149.48.12 - India, Hyderabad
-180.149.48.1 - India, Telangana
-180.149.48.21 - India, Telangana
-180.149.48.5 - India, Telangana
-180.149.48.17 - India, Telangana

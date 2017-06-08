@@ -23,7 +23,7 @@ def calculateVarianceAndMean(jsonFile='trace.json'):
 	print
 	print "-----------------------------"
 	res = []
-	
+
 	for ttl in data:
 		ip = data[ttl]["rtts"].keys()[0]
 		mean = data[ttl]["mean"]*1000
@@ -128,6 +128,6 @@ def plot2(datos):
 	plt.show()
 
 
-res = calculateVarianceAndMean("kenya_uni.json")
+res = calculateVarianceAndMean("trace_delhi.json")
 plot1(res)
 plot2(res)
