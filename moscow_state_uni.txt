@@ -537,7 +537,7 @@ LOCATIONS
 4.69.158.241 - US, Kansas - X
 213.242.110.198 - Francia - X
 194.85.40.229 - Rusia, Saint Petersburg
-194.190.254.118 - Rusia, Saint Petersburg / Moscow
+194.190.254.118 - Rusia, Saint Petersburg
 93.180.0.174 - Rusia, Lipetsk
 188.44.33.10 - Rusia, Moscow
 188.44.33.42 - Rusia, Moscow
